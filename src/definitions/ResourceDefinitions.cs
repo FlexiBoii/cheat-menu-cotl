@@ -21,9 +21,34 @@ public class ResourceDefinitions : IDefinition{
         CultUtils.GiveDocterineStone();
     }
 
+    [CheatDetails("Give Forgotten Commandment Stone", "Gives a Forgotten Commandment Stone")]
+    public static void GiveForgottenCommandmentStone()
+    {
+        CultUtils.GiveForgottenDocterineStone();
+    }
+
+    [CheatDetails("Give Sin", "Gives Sin")]
+    public static void GiveSin()
+    {
+        CultUtils.GiveSin();
+
+    }
+
     [CheatDetails("Give Monster Heart", "Gives a heart of the heretic")]
     public static void GiveMonsterHeart(){
         CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.MONSTER_HEART, 10);
+    }
+
+    [CheatDetails("Give Eye of Witness", "Gives an Eye of a Witness")]
+    public static void GiveBeholderEye()
+    {
+        CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.BEHOLDER_EYE, 1);
+    }
+
+    [CheatDetails("Give God Tear", "Gives a Tear of God")]
+    public static void GiveGodTear()
+    {
+        CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.GOD_TEAR, 1);
     }
 
     [CheatDetails("Give Food", "Gives all farming based foods")]
@@ -50,6 +75,10 @@ public class ResourceDefinitions : IDefinition{
     [CheatDetails("Give Fertiziler", "Gives x100 Fertiziler (Poop)")]
     public static void GivePoop(){
         CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.POOP, 100);
+        CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.POOP_GOLD, 100);
+        CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.POOP_GLOW, 100);
+        CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.POOP_DEVOTION, 100);
+        CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.POOP_RAINBOW, 100);
     }
 
     [CheatDetails("Give Follower Meat", "Gives x10 Follower Meat")]
@@ -64,6 +93,10 @@ public class ResourceDefinitions : IDefinition{
         CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.Necklace_3, 1);
         CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.Necklace_4, 1);
         CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.Necklace_5, 1);
+        CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.Necklace_Loyalty, 1);
+        CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.Necklace_Demonic, 1);
+        CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.Necklace_Missionary, 1);
+        CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.Necklace_Gold_Skull, 1);
     }
 
     [CheatDetails("Give Small Gift", "Gives you a 'small' gift x10")]

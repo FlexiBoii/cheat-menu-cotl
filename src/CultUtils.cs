@@ -24,6 +24,34 @@ internal class CultUtils {
         PlayerDoctrineStone.OnIncreaseCount?.Invoke();
         CultUtils.PlayNotification("Commandment stone given!");
     }
+    public static void GiveForgottenDocterineStone()
+    {
+        if (!DataManager.Instance.OnboardedCrystalDoctrine)
+        {
+            CultUtils.PlayNotification("You need to unlock them legit first!");
+        }
+        else
+        {
+            DataManager.Instance.CrystalDoctrinesReceivedFromMysticShop += 1;
+            CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.CRYSTAL_DOCTRINE_STONE, 1);
+            CultUtils.PlayNotification("Forgotten Commandment stone given!");
+        }
+    }
+
+    public static void GiveSin()
+    {
+        if (!DataManager.Instance.PleasureRevealed)
+        {
+            CultUtils.PlayNotification("You need to unlock Sin legit first!");
+        }
+        else
+        {
+            CultUtils.AddInventoryItem(InventoryItem.ITEM_TYPE.PLEASURE_POINT, 10);
+            CultUtils.PlayNotification("You have sinned 10 Times!");
+        }
+    }
+    
+        
 
     public static void CompleteObjective(ObjectivesData objective){
         objective.Complete();
@@ -231,11 +259,11 @@ internal class CultUtils {
     public static void SetFollowerStarvation(FollowerInfo followerInfo, float value){
         FollowerBrainStats.StatStateChangedEvent onStarvationStateChanged = FollowerBrainStats.OnStarvationStateChanged;
         if(value > 0){
-            followerInfo.Starvation = UnityEngine.Mathf.Clamp(value, 0, 75);
-            followerInfo.IsStarving = true;
+            followerInfo.Starvation = UnityEngine.Mathf.Clamp(value, 0f, 75f);
+            //followerInfo.IsStarving = true;
         } else {
             followerInfo.Starvation = 0f;
-            followerInfo.IsStarving = false;
+            //followerInfo.IsStarving = false;
         }
         onStarvationStateChanged(followerInfo.ID, FollowerStatState.On, FollowerStatState.Off);
     }
@@ -296,25 +324,24 @@ internal class CultUtils {
 
     public static float CalculateCurrentFaith()
     {
-        float totalFaith = 0f;
-        foreach (ThoughtData thoughtData in CultFaithManager.Thoughts)
+        float totalFaith = CultFaithManager.StaticFaith;
+
+        foreach (ThoughtData thoughtData in CultFaithManager.TrackedThoughts)
         {
-            int index = 0;
-            float thoughtFaith = -1;
-            while (index <= thoughtData.Quantity)
+            for (int i = 0; i < thoughtData.Quantity; i++)
             {
-                if(index == 0)
+                if (i == 0)
                 {
-                    thoughtFaith += thoughtData.Modifier;
-                } else
-                {
-                    thoughtFaith += thoughtData.StackModifier;
+                    totalFaith += thoughtData.Modifier;
                 }
-                index += 1;
+                else
+                {
+                    totalFaith += thoughtData.StackModifier;
+                }
             }
-            totalFaith += thoughtFaith;
         }
-        return totalFaith;
+
+        return Mathf.Clamp(totalFaith, CultFaithManager.MIN_FAITH, CultFaithManager.MAX_FAITH);
     }
 
     public static float GetCurrentFaith()
@@ -396,13 +423,13 @@ internal class CultUtils {
 
     public static void ClearAllThoughts()
     {
-        CultFaithManager.Thoughts.Clear();
+        CultFaithManager.TrackedThoughts.Clear();
         CultFaithManager.GetFaith(0f, 0f, true, NotificationBase.Flair.Positive, "Cleared follower thoughts!", -1);
     }
 
     public static void ClearAndAddPositiveFollowerThought()
     {
-        CultFaithManager.Thoughts.Clear();
+        CultFaithManager.TrackedThoughts.Clear();
         foreach(var follower in DataManager.Instance.Followers){
             CultFaithManager.AddThought(Thought.TestPositive, follower.ID, 999);
         }
@@ -424,7 +451,7 @@ internal class CultUtils {
                                     bool withNotification = false)
     {
         NotificationCentre.NotificationType notifType = withNotification ? NotificationCentre.NotificationType.Died : NotificationCentre.NotificationType.None;
-        follower.Die(notifType, false, 1, "dead", null, true);
+        follower.Die(notifType, false, 1,"die", "dead", null, true);
     }
 
     //Similar to the revive that is performed by ritual but makes sure they aren't ill / hungry
